@@ -1,14 +1,21 @@
 ---
-title: "The Preston Curve Revisited"
-author: "Joachim Gassen"
-institute: "TRR 266 Accounting for Transparency"
+title: "Code & Data Handling in Empirical Research"
+subtitle: "Could We Do Better?"
+author: "Tobias Witter"
+institute: "HUB, TRR 266"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
   beamer_presentation: 
-    latex_engine: xelatex # pdflatex creates rastered fonts
+    latex_engine: xelatex
     slide_level: 3
+    toc: no
+    highlight: espresso
+bibliography: references.bib
+biblio-style: apsr
+urlcolor: blue
+linkcolor: blue
+link-citations: yes
 
-        
 header-includes:
 - \usepackage{booktabs} 
 - \usepackage{threeparttable}
@@ -22,132 +29,191 @@ knitr::opts_chunk$set(
 )
 library(tidyverse)
 library(kableExtra)
-load("../output/results.rda")
-load("../data/generated/sample.rda")
 ```
 
 
-# Motivation
 
-### The Preston Curve
+## Part 1: An Integrated View on Empirical Research Projects
+
+
+
+### Motivation: Mental Juggling with Research Projects
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{../media/preston_1975_p235.png} \\
-Preston (1975, p. 235)
+\includegraphics[width=0.8\textwidth]{../media/cat-fix-clean.png} \\
 \end{center}
 
 
-### Data
 
-```{r tab_descriptives_sample, results="asis"}
-desc_rnames <- paste0("\\textit{", smp_def$label[7:9], "}")
-t <- tab_desc_stat
-rownames(t$df) <- desc_rnames
-names(t$df)[c(5,7)] <- c("25 \\%", "75 \\%")
-kable(
-  t$df, digits = c(0, 3, 3, 3, 3, 3, 3, 3), format = "latex",
-  caption = "\\label{tab:descriptives}Descriptive Statistics",
-  format.args = list(decimal.mark = ".", big.mark = ",", 
-                     scientific=FALSE),
-  booktabs = TRUE, escape = FALSE, linesep = ""
-) -> kab_latex
+### Empirical Research Projects
 
-lat_tab <- unlist(strsplit(kab_latex, "\n"))
-lat_tab[6] <- "\\\\[-1.8ex]\\hline \\hline \\\\[-1.8ex]"
-lat_tab[8] <- "\\hline\\\\[-1.8ex]"
-lat_tab[length(lat_tab) - 2] <- "\\\\[-1.8ex]\\hline \\hline \\\\[-1.8ex]"
-
-latex_tab <- c(
-  "\\begin{table}[!htbp]",  
-  "\\resizebox{\\textwidth}{!}{",
-  "\\begin{threeparttable}",
-  lat_tab[5:(length(lat_tab) - 2)],
-  "\\end{tabular}",
-  "\\begin{tablenotes}[flushleft]",
-  "\\setlength{\\labelsep}{0pt}",
-  sprintf(
-    "\\item Note: The data is obtained from the World Bank. The sample covers %d countries and the period %d to %d. \\textit{National Income per captia} values are in constant 2010 thousand U.S. dollars.", length(unique(smp$country)),
-    min(as.numeric(as.character(smp$year))), 
-    max(as.numeric(as.character(smp$year)))
-  ),
- "\\end{tablenotes}",
-  "\\end{threeparttable}",
-  "}",
-  "\\end{table}"
-)
-cat(paste(latex_tab, collapse = "\n"))  
-```
+1. Retrieve/collect raw data
+2. Import raw data
+3. Tidy raw data
+4. Transform (raw) data
+5. Visualize transformed data (= tables, figures, statistics)
+6. Model: Explore, describe, causally test for relationships between variables
+7. Communicate
 
 
-### Life Expectancy by National Income
 
-```{r Scatter}
-fig_scatter
-```
+### Should Empirical Researchers look at Data Scientists and Programmers?
 
+Let's look at advice to Data Scientists says [@r4ds]:
 
-### No presentation without correlation table...
-
-``` {r CorrTable, results="asis"}
-tab <- tab_corr
-lat_tab <- unlist(strsplit(tab$kable_ret, "\n"))
-lat_tab[7:9] <- str_replace(
-  lat_tab[7:9], fixed(smp_def$var_name[8:10]), smp_def$label[8:10]
-)
-lat_tab[4] <- "\\\\[-1.8ex]\\hline \\hline \\\\[-1.8ex]"
-lat_tab[6] <- "\\hline\\\\[-1.8ex]"
-lat_tab[10] <- "\\\\[-1.8ex]\\hline \\hline \\\\[-1.8ex]"
-latex_tab <- c(
-  "\\begin{center}",
-  "\\begin{tabular}{lccc}",
-  lat_tab[4:10],
-  "\\end{tabular}",
-  "\\end{center}"
-)
-cat(paste(latex_tab, collapse = "\n"))
-```
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../media/data-science.png} \\
+\end{center}
 
 
-### ... and regression table
 
-``` {r RegTable, results="asis"}
-tab <- tab_regression$table
-tab[12] <- paste(
-  "\\\\[-1.8ex] & \\multicolumn{4}{c}{", smp_def$label[9], "} \\\\"
-)
-esc_var_names <- str_replace_all(smp_def$var_name, fixed ("_"), "\\_")
-reg_names <- tibble(
-  var_name = esc_var_names[c(10, 8)],
-  label = smp_def$label[c(10, 8)]
-)
-for (i in c(15, 18)) {
-  pos <- (i-12)/3
-  tab[i] <- str_replace(
-    tab[i], fixed(reg_names$var_name[pos]), reg_names$label[pos]
-  )
-}
+### Software Developers as new best buddies? {.columns-2}
 
-latex_tab <- c(
-  "\\begin{center}",
-  "\\resizebox*{!}{0.8\\textheight}{",
-  "\\begin{tabular}{lcccc}",
-  tab[8:33],
-  "\\end{tabular}}",
-  "\\end{center}"
-)
-cat(paste(latex_tab, collapse = "\n"))
-```
+\footnotesize
+
+:::::::::::::: {.columns}
+::: {.column}
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../media/python-file-structure.png} \\
+\end{center}
+
+:::
+::: {.column}
+
+\
+\
+\
+The TRR 266 template:
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../media/treat-file-structure.png} \\
+\end{center}
+
+:::
+::::::::::::::
+
+
+
+### Software Developers as new best buddies? {.columns-2}
+
+- Version Control Systems
+  - GitHub
+  - Nextcloud
+
+
+
+## Part 2: Code
+
+
+
+### Code Organization
+
+- Code automation
+- Re-using code
+- Product-oriented programming
+- Functional instead of object-oriented programming
+
+
+
+## Part 3: Data
+
+
+
+### Data Handling
+
+- Automated data retrieval
+- Product-orientation
+- Have tidy data! [@wickham2014]
+
+
+
+### Tidy data
+
+In tidy data:
+
+1. Each variable forms a column.
+2. Each observation forms a row.
+3. Each type of observational unit forms a table.
+
+
+
+## Part 4: Looking at Examples
+
+
+
+### Code Examples
+
+- ...
+- ...
+
+
+
+### Data Examples
+
+- ...
+- ...
+
 
 
 ### Conclusion
 
-- The Preston Curve is alive and well! 
-- Have fun adjusting this template to fit your research needs
-- Consider contributing to its repository and promote Open Science!
+- ...
+- ...
 
 
 
+### Resources
+
+\footnotesize
+
+- The Python File Structure Tree was taken from @sdtemp.
+- The TRR 266 Template for Reproducible Empirical Accounting Research is available from @trrtreat.
+- Free data science resources: https://github.com/alastairrushworth/free-data-science
+- Read about tidy data here: @wickham2014
+- Licensing of code and data: @crlic
 
 
 
+### Goals and characteristics of research templates
 
+1. avoid confusion
+2. as simple as possible
+3. keep your code clean, neat, structured, and clutter free
+4. file structure system is modular
+5. each folder has explanation
+6. more documentation in the folder itself
+7. hierarchical tree file organization system
+8. standard for small to medium size projects
+9. ...
+
+
+
+### Software Developers as new best buddies? {.columns-2}
+
+\footnotesize
+
+Do's and Don'ts (adapted) from a large survey of software developers [@datreebest]:
+
+1. Don’t mingle code that is under development with production-ready code
+2. Don’t commit code as an unrecognized author (always share you identity)
+3. Define code owners for faster code reviews (who is responsible?)
+4. Don’t leak secrets into shared code (protect your passwords)
+5. Don’t commit dependencies into source control
+6. Don’t commit local config files into source control
+7. Create a meaningful git ignore file
+8. Archive dead repositories
+9. Lock package version
+10. Specify standard package versions
+11. Leverage task list
+12. Use a branch naming convention
+13. Delete stale branches
+14. Keep branches up to date
+15. Remove inactive GitHub members
+16. Enable security alerts
+
+
+
+### References {-}
+
+\footnotesize

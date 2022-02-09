@@ -1,9 +1,9 @@
-## The TRR 266 Template for Reproducible Empirical Research 
+## Workshop "Code & Data Handling in Empirical Accounting Research: How could we improve?"
 
-This repository provides an infrastructure for open science oriented empirical projects. It is based on the [TREAT repository](https://github.com/trr266/treat) but uses World Bank data instead of WRDS data so that it can be used by everybody interested in reproducible empirical research. Currently, this is all R based but it is not meant to stay that way. You can help by contributing Python and/or Stata code that mimics the R analysis steps via pull requests.
+This repository contains code, data and slides for the short workshop "Code & Data Handling for Empirical Accounting Research" at Paderborn University on Feb 15, 2022.
 
 
-### Where do I start?
+### Reproducing this repo
 
 For those of you new to R, we have "produced" a [series of short videos](https://www.youtube.com/playlist?list=PL-9XqvJlFJ-5NDUXubrbvF3aEQPeoAki3) that guide you through the process of setting up your computing environment and using the original TREAT repository. Also, there is a [blog post](https://joachim-gassen.github.io/2021/03/get-a-treat/) that details these steps in a written form. The steps of using this repository are esentially identical so this information does still apply.
 
