@@ -45,6 +45,16 @@ library(kableExtra)
 
 
 
+### Should Empirical Researchers look at Data Scientists and Programmers?
+
+Let's look at advice to Data Scientists [@r4ds]:
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../media/data-science.png} \\
+\end{center}
+
+
+
 ### Empirical Research Projects
 
 1. Retrieve/collect raw data
@@ -54,16 +64,6 @@ library(kableExtra)
 5. Visualize transformed data (= tables, figures, statistics)
 6. Model: Explore, describe, causally test for relationships between variables
 7. Communicate
-
-
-
-### Should Empirical Researchers look at Data Scientists and Programmers?
-
-Let's look at advice to Data Scientists says [@r4ds]:
-
-\begin{center}
-\includegraphics[width=0.8\textwidth]{../media/data-science.png} \\
-\end{center}
 
 
 
@@ -95,34 +95,35 @@ The TRR 266 template:
 
 
 
-### Software Developers as new best buddies? {.columns-2}
+## Part 2: Code & Data
 
+
+
+### Code & Data Organization
+
+- Product-oriented programming
 - Version Control Systems
   - GitHub
-  - Nextcloud
+  - Using clouds like Nextcloud (desktop application with local drive?)
+  - Advantages of GitHub over clouds?
 
-
-
-## Part 2: Code
 
 
 
 ### Code Organization
 
-- Code automation
-- Re-using code
-- Product-oriented programming
 - Functional instead of object-oriented programming
-
-
-
-## Part 3: Data
+- Code testing: Writing tests that the code must pass
+- Code automation?
+- Re-using code
 
 
 
 ### Data Handling
 
 - Automated data retrieval
+  - Retrieve data by code
+  - WRDS automated code for Stata, R, Python, SAS
 - Product-orientation
 - Have tidy data! [@wickham2014]
 
@@ -138,7 +139,7 @@ In tidy data:
 
 
 
-## Part 4: Looking at Examples
+## Part 3: Looking at Examples
 
 
 
@@ -158,8 +159,9 @@ In tidy data:
 
 ### Conclusion
 
-- ...
-- ...
+\begin{center}
+\includegraphics[width=0.8\textwidth]{../media/cat-happy-code.jpg} \\
+\end{center}
 
 
 
@@ -171,7 +173,7 @@ In tidy data:
 - The TRR 266 Template for Reproducible Empirical Accounting Research is available from @trrtreat.
 - Free data science resources: https://github.com/alastairrushworth/free-data-science
 - Read about tidy data here: @wickham2014
-- Licensing of code and data: @crlic
+- Licensing of code and data: C02 Open Science Office Hours, @crlic
 
 
 
