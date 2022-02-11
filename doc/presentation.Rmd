@@ -8,14 +8,11 @@ output:
   beamer_presentation: 
     latex_engine: xelatex
     slide_level: 3
-    toc: no
-    highlight: espresso
 bibliography: references.bib
 biblio-style: apsr
 urlcolor: blue
 linkcolor: blue
 link-citations: yes
-
 header-includes:
 - \usepackage{booktabs} 
 - \usepackage{threeparttable}
@@ -33,11 +30,9 @@ library(kableExtra)
 
 
 
-## Part 1: An Integrated View on Empirical Research Projects
+### Mental Juggling with Research Projects
 
-
-
-### Motivation: Mental Juggling with Research Projects
+Every time, I look into old project folders or project folders of other it felt like...
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{../media/cat-fix-clean.png} \\
@@ -45,9 +40,13 @@ library(kableExtra)
 
 
 
-### Should Empirical Researchers look at Data Scientists and Programmers?
+## Part 1: An Integrated View on Empirical Research Projects
 
-Let's look at advice to Data Scientists [@r4ds]:
+
+
+### Empirical Researchers, Data Scientists or Programmers?
+
+Model of the tools needed in a typical data science project [@r4ds]:
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{../media/data-science.png} \\
@@ -61,9 +60,10 @@ Let's look at advice to Data Scientists [@r4ds]:
 2. Import raw data
 3. Tidy raw data
 4. Transform (raw) data
-5. Visualize transformed data (= tables, figures, statistics)
-6. Model: Explore, describe, causally test for relationships between variables
-7. Communicate
+5. Visualize transformed data [tables, figures, statistics]
+6. Model [explore, describe, causally test for relationships between variables]
+7. Generate research "products"
+8. Communicate
 
 
 
@@ -83,11 +83,10 @@ Let's look at advice to Data Scientists [@r4ds]:
 
 \
 \
-\
 The TRR 266 template:
 
 \begin{center}
-\includegraphics[width=0.7\textwidth]{../media/treat-file-structure.png} \\
+\includegraphics[width=0.55\textwidth]{../media/treat-file-structure.png} \\
 \end{center}
 
 :::
@@ -101,9 +100,14 @@ The TRR 266 template:
 
 ### Code & Data Organization
 
-- Product-oriented programming
-- Version Control Systems
-  - GitHub
+- Product-oriented organization
+  - Create software and data "products"
+  - Products: functions, output
+  - Publish your code and data, get a DOI?
+  - License your stuff!
+
+- Version control systems
+  - Git and GitHub (free account for researchers)
   - Using clouds like Nextcloud (desktop application with local drive?)
   - Advantages of GitHub over clouds?
 
@@ -112,26 +116,62 @@ The TRR 266 template:
 
 ### Code Organization
 
-- Functional instead of object-oriented programming
-- Code testing: Writing tests that the code must pass
+An example from the TRR 266 template repository:
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../media/treat-code-structure.png} \\
+\end{center}
+
+
+
+### Code Organization
+
+- Consistent naming of code and variables!
+  - you_could_use_snake_case
+  - CamelCaseIsAnAlternative
+
 - Code automation?
-- Re-using code
+  - No need to run line-by-line, but script-by-script
+  - Having a master file
+  - Input/output pre-defined
+  - Final product: Set of tables/figures, presentation or paper
+
+- Functional vs object-oriented programming
+  - Functional: A function takes a defined input to created a defined output
+  - Repeated evaluation, efficient, re-using code
+
+- Code testing: Writing tests that the code must pass
+
+
+
+### Data Organization
+
+An example from the TRR 266 template repository:
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../media/treat-data-structure.png} \\
+\end{center}
 
 
 
 ### Data Handling
 
+- Consistent naming of data files!
+  - 'raw_data_wrds_analyst_forecasts.csv'
+  - 'dataset_final.csv'
 - Automated data retrieval
-  - Retrieve data by code
+  - Retrieve data using code
   - WRDS automated code for Stata, R, Python, SAS
 - Product-orientation
-- Have tidy data! [@wickham2014]
+  - Define data products upfront
+  - Often several version ('_v08.csv', '_20220211.xlsx')
+- Generate tidy data (next slide)
 
 
 
 ### Tidy data
 
-In tidy data:
+Have tidy data! [@wickham2014] ...but what's tidy data?
 
 1. Each variable forms a column.
 2. Each observation forms a row.
@@ -143,21 +183,151 @@ In tidy data:
 
 
 
-### Code Examples
+### Example 1: A project folder
 
-- ...
-- ...
+\footnotesize
+
+.['Old versions']\
+.['Resources']\
+.['Raw data']\
+definition_of_variables.xlsx\
+data_snippet_A.xlsx\
+R_script_1_masterfile.R\
+R_script_2_load_and_class_variables.R\
+R_script_3_prepare_data.R\
+R_script_4_check_data_for_missing_values.R\
+R_script_5_check_data_for_missing_values_old_version.R\
+R_script_6_data_cleaning.R\
+R_script_7_running_analyses_A.R\
+R_script_8_running_analyses_B.R\
+R_script_9_additional_analyses.R\
+raw_data_af.xlsx\
+raw_data_step_1.xlsx\
+raw_data_step_2.xlsx\
+raw_data_step_3.xlsx\
+raw_data_step_4.xlsx\
+final_dataset.xlsx
 
 
 
-### Data Examples
+### Example 1: A project folder
 
-- ...
-- ...
+\footnotesize
+
+:::::::::::::: {.columns}
+::: {.column}
+
+.['Old versions']\
+.['Resources']\
+.['Raw data']\
+definition_of_variables.xlsx\
+data_snippet_A.xlsx\
+R_script_1_masterfile.R\
+R_script_2_load_and_....R\
+R_script_3_prepare_data.R\
+R_script_4_check_data....R\
+R_script_5_check_data_....R\
+R_script_6_data_cleaning.R\
+R_script_7_running_analyses_A.R\
+R_script_8_running_analyses_B.R\
+R_script_9_additional_analyses.R\
+raw_data_af.xlsx\
+raw_data_step_1.xlsx\
+raw_data_step_2.xlsx\
+raw_data_step_3.xlsx\
+raw_data_step_4.xlsx\
+final_dataset.xlsx
+
+:::
+::: {.column}
+
+.[raw_data] <includes raw data/definitions>\
+    ... raw_data.xlsx\
+    ... definition_of_variables.xlsx\
+  
+.[data] <includes transformed data/definitions>\
+    ... main_dataset.xlsx\
+    ... definition_of_variables.xlsx\
+  
+.[code] <includes all code snippets>\
+    ... prepare_data.R\
+    ... do_analyses.R\
+  
+.[output] <includes your 'products'>\
+    ... set_of_table_and_figures.docx\
+
+masterfile.R\
+\
+\
+(+ use if-else-clauses to check if a certain step was already carried out)
+
+:::
+::::::::::::::
 
 
 
-### Conclusion
+
+### Example 1: A data folder
+
+\footnotesize
+
+.['MainTestsData']\
+.['MainTestsData_v2']\
+data_A_yearly_v1.xlsx\
+data_A_yearly_v1.csv\
+data_B_yearly_v2.xlsx\
+data_B_yearly_v2.csv\
+data_C_yearly_final.xlsx\
+data_C_yearly_final.csv\
+data_C_yearly_final.txt\
+data_C_yearly_final2.txt\
+data_D_compustat_2005_20220210.txt\
+data_E_analysis_1.txt\
+data_E_analysis_1.xlsx\
+data_F_analysis_2.txt\
+data_F_analysis_2.xlsx\
+
+
+
+### Example 1: A data folder
+
+\footnotesize
+
+:::::::::::::: {.columns}
+::: {.column}
+
+.['MainTestsData']\
+.['MainTestsData_v2']\
+data_A_yearly_v1.xlsx\
+data_A_yearly_v1.csv\
+data_B_yearly_v2.xlsx\
+data_B_yearly_v2.csv\
+data_C_yearly_final.xlsx\
+data_C_yearly_final.csv\
+data_C_yearly_final.txt\
+data_C_yearly_final2.txt\
+data_D_compustat_2005_20220210.txt\
+data_E_analysis_1.txt\
+data_E_analysis_1.xlsx\
+data_F_analysis_2.txt\
+data_F_analysis_2.xlsx\
+
+:::
+::: {.column}
+
+.[data] <includes transformed data/definitions>\
+    ... main_dataset.csv\
+    ... component_compustat.csv\
+    ... component_ibes.csv\
+    ... component_capitaliq.csv\
+    ... definition_of_variables.csv\
+
+:::
+::::::::::::::
+
+
+
+### Thanks for Listening!
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{../media/cat-happy-code.jpg} \\
@@ -174,6 +344,7 @@ In tidy data:
 - Free data science resources: https://github.com/alastairrushworth/free-data-science
 - Read about tidy data here: @wickham2014
 - Licensing of code and data: C02 Open Science Office Hours, @crlic
+- Do's and Don'ts from a survey of software developers [@datreebest]
 
 
 
@@ -191,31 +362,6 @@ In tidy data:
 
 
 
-### Software Developers as new best buddies? {.columns-2}
-
-\footnotesize
-
-Do's and Don'ts (adapted) from a large survey of software developers [@datreebest]:
-
-1. Don’t mingle code that is under development with production-ready code
-2. Don’t commit code as an unrecognized author (always share you identity)
-3. Define code owners for faster code reviews (who is responsible?)
-4. Don’t leak secrets into shared code (protect your passwords)
-5. Don’t commit dependencies into source control
-6. Don’t commit local config files into source control
-7. Create a meaningful git ignore file
-8. Archive dead repositories
-9. Lock package version
-10. Specify standard package versions
-11. Leverage task list
-12. Use a branch naming convention
-13. Delete stale branches
-14. Keep branches up to date
-15. Remove inactive GitHub members
-16. Enable security alerts
-
-
-
 ### References {-}
 
-\footnotesize
+\tiny
