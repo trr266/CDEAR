@@ -1,0 +1,3 @@
+\beamer@subsectionintoc {0}{1}{Part 1: An integrated view on empirical research projects}{3}{0}{0}
+\beamer@subsectionintoc {0}{2}{Part 2: Code \& data}{7}{0}{0}
+\beamer@subsectionintoc {0}{3}{Part 3: Looking at examples}{14}{0}{0}

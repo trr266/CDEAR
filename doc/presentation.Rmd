@@ -1,22 +1,23 @@
 ---
-title: "Code & Data Handling in Empirical Research"
+title: "Code & Data Handling in Empirical Research Projects"
 subtitle: "Could We Do Better?"
 author: "Tobias Witter"
 institute: "HUB, TRR 266"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
+date: "Februar 15, 2022"
 output: 
   beamer_presentation: 
     latex_engine: xelatex
     slide_level: 3
+
 bibliography: references.bib
 biblio-style: apsr
 urlcolor: blue
 linkcolor: blue
 link-citations: yes
 header-includes:
-- \usepackage{booktabs} 
-- \usepackage{threeparttable}
-- \usepackage{graphicx}
+  - \usepackage{booktabs} 
+  - \usepackage{threeparttable}
+  - \usepackage{graphicx}
 ---
 
 
@@ -30,9 +31,9 @@ library(kableExtra)
 
 
 
-### Mental Juggling with Research Projects
+### Mental juggling with research projects
 
-Every time, I look into old project folders or project folders of other it felt like...
+A while ago, every time I looked into old project folders, or project folders of others, it felt like...
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{../media/cat-fix-clean.png} \\
@@ -40,11 +41,11 @@ Every time, I look into old project folders or project folders of other it felt 
 
 
 
-## Part 1: An Integrated View on Empirical Research Projects
+## Part 1: An integrated view on empirical research projects
 
 
 
-### Empirical Researchers, Data Scientists or Programmers?
+### Empirical researcher, data scientist or programmer?
 
 Model of the tools needed in a typical data science project [@r4ds]:
 
@@ -54,7 +55,7 @@ Model of the tools needed in a typical data science project [@r4ds]:
 
 
 
-### Empirical Research Projects
+### Empirical research projects
 
 1. Retrieve/collect raw data
 2. Import raw data
@@ -67,7 +68,7 @@ Model of the tools needed in a typical data science project [@r4ds]:
 
 
 
-### Software Developers as new best buddies? {.columns-2}
+### Software developers as new best buddies? {.columns-2}
 
 \footnotesize
 
@@ -94,11 +95,11 @@ The TRR 266 template:
 
 
 
-## Part 2: Code & Data
+## Part 2: Code & data
 
 
 
-### Code & Data Organization
+### Code & data organization
 
 - Product-oriented organization
   - Create software and data "products"
@@ -114,7 +115,7 @@ The TRR 266 template:
 
 
 
-### Code Organization
+### Code organization
 
 An example from the TRR 266 template repository:
 
@@ -124,7 +125,7 @@ An example from the TRR 266 template repository:
 
 
 
-### Code Organization
+### Code organization
 
 - Consistent naming of code and variables!
   - you_could_use_snake_case
@@ -144,7 +145,7 @@ An example from the TRR 266 template repository:
 
 
 
-### Data Organization
+### Data organization
 
 An example from the TRR 266 template repository:
 
@@ -154,7 +155,7 @@ An example from the TRR 266 template repository:
 
 
 
-### Data Handling
+### Data handling
 
 - Consistent naming of data files!
   - 'raw_data_wrds_analyst_forecasts.csv'
@@ -179,7 +180,7 @@ Have tidy data! [@wickham2014] ...but what's tidy data?
 
 
 
-## Part 3: Looking at Examples
+## Part 3: Looking at examples
 
 
 
@@ -210,7 +211,7 @@ final_dataset.xlsx
 
 
 
-### Example 1: A project folder
+### Example 1: A project folder (ctd.)
 
 \footnotesize
 
@@ -267,7 +268,7 @@ masterfile.R\
 
 
 
-### Example 1: A data folder
+### Example 2: A data folder
 
 \footnotesize
 
@@ -289,7 +290,7 @@ data_F_analysis_2.xlsx\
 
 
 
-### Example 1: A data folder
+### Example 2: A data folder (ctd.)
 
 \footnotesize
 
@@ -327,7 +328,7 @@ data_F_analysis_2.xlsx\
 
 
 
-### Thanks for Listening!
+### Thanks for listening!
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{../media/cat-happy-code.jpg} \\
@@ -343,21 +344,23 @@ data_F_analysis_2.xlsx\
 - The TRR 266 Template for Reproducible Empirical Accounting Research is available from @trrtreat.
 - Free data science resources: https://github.com/alastairrushworth/free-data-science
 - Read about tidy data here: @wickham2014
-- Licensing of code and data: C02 Open Science Office Hours, @crlic
-- Do's and Don'ts from a survey of software developers [@datreebest]
+- Licensing of code and data: C02 Open Science office hours, @crlic
+- Do's and don'ts from a survey of software developers [@datreebest]
 
 
 
 ### Goals and characteristics of research templates
 
-1. avoid confusion
-2. as simple as possible
-3. keep your code clean, neat, structured, and clutter free
-4. file structure system is modular
-5. each folder has explanation
-6. more documentation in the folder itself
-7. hierarchical tree file organization system
-8. standard for small to medium size projects
+Reasons to follow a standard structure [@sdtemp]:
+
+1. You avoid confusion
+2. It is as simple as possible
+3. You keep your code clean, neat, structured, and clutter free
+4. The file structure system is modular
+5. Each folder has an explanation
+6. More documentation in the folder itself
+7. Hierarchical tree file organization system
+8. Standard for small to medium size projects
 9. ...
 
 

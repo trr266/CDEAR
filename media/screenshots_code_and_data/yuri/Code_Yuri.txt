@@ -1,0 +1,182 @@
+cd "C:\Users\ypiper\Nextcloud\tr266_b08_xyz\Data\YP"
+
+version 17
+set more off
+capture log close
+log using VSt-File, replace
+
+* Data: Vonovia
+use xyz_baujahre, clear
+
+
+*** UMBENENNUNG VARIABLEN ***
+
+rename Jahr jahr
+rename RegionalMarkt region
+rename Baujahr baujahr
+rename Baujahresspanne baujahresspanne
+rename Wohneinheiten wn_anzahl
+rename Wohnfläche wn_fläche
+rename Gesamtfläche ges_fläche
+rename VermieteteWohnfläche wn_fläche_vm
+rename AnnualisierteIstmieteWohnen wn_miete_jahr
+rename IstmieteWohnenm wn_miete_qm
+rename AnnualisierteIstmieteGesamt ges_miete_jahr
+rename LeerstandWohnenNenner wn_leer_nenner
+rename LeerstandWohnenZähler wn_leer_zähler
+rename LeerstandsquoteWohnen wn_leerstand
+rename Verkehrswert vkw
+rename IstMulti ges_multi
+rename VKWm vkw_qm
+rename InstandhaltungskostenGesamtin ges_instand_qm_jahr
+rename VerwaltungskostenWohneninp wn_verwalt_jahr
+
+label define baujahr_lb 1 "vor 1945" 2 "zwischen 1945 und 1980" 3 "nach 1980" 4 "nach 2000" 5 "Gesamt"
+label values baujahr baujahr_lb
+
+
+*** GENERIERUNG NEUER VARIABLEN ***
+
+generate region_ = region + "_" + string(baujahr) 
+encode region_, generate(region_num_bj)
+* encode region, generate(region_num_ges) - Diese Var wird erstmal nicht benötigt
+
+xtset region_num_bj jahr
+
+* Berechnung Renditen
+generate wn_verwalt_qm_jahr = (wn_anzahl*wn_verwalt_jahr)/wn_fläche
+generate ges_miete_qm = vkw_qm/(ges_multi*12)
+generate ges_netmiete_pretax = ges_miete_qm - (ges_instand_qm_jahr/12) - (wn_verwalt_qm_jahr/12)
+generate rendite_pretax = (1/ges_multi)
+
+* Steuersätze
+generate est = 0.47475
+generate ctax = 0.15 + (0.15*0.055) + 0.03*4
+generate vst_1 = 0.01
+generate vst_2 = 0.02
+generate vst_5 = 0.05
+
+* Berechnung Renditen nach Steuern für den KapG Fall
+generate rendite_post_ctax = rendite_pretax - rendite_pretax*ctax
+generate rendite_post_ctax_1 = (rendite_post_ctax - vst_1)
+generate rendite_post_ctax_2 = (rendite_post_ctax - vst_2)
+generate rendite_post_ctax_5 = (rendite_post_ctax - vst_5)
+generate ges_miete_post_ctax_1 = ges_miete_qm*(1-ctax) - (vkw_qm/12)*vst_1
+generate ges_miete_post_ctax_2 = ges_miete_qm*(1-ctax) - (vkw_qm/12)*vst_2
+generate ges_miete_post_ctax_5 = ges_miete_qm*(1-ctax) - (vkw_qm/12)*vst_5
+generate ges_netmiete_post_ctax_1 = ges_netmiete_pretax*(1-ctax) - (vkw_qm/12)*vst_1
+generate ges_netmiete_post_ctax_2 = ges_netmiete_pretax*(1-ctax) - (vkw_qm/12)*vst_2
+generate ges_netmiete_post_ctax_5 = ges_netmiete_pretax*(1-ctax) - (vkw_qm/12)*vst_5
+
+* Berechnung Renditen nach Steuern für den EinzelPers Fall
+generate rendite_post_est = rendite_pretax - rendite_pretax*est
+generate rendite_post_est_1 = (rendite_post_est - vst_1)
+generate rendite_post_est_2 = (rendite_post_est - vst_2)
+generate rendite_post_est_5 = (rendite_post_est - vst_5)
+generate ges_miete_post_est_1 = ges_miete_qm*(1-est) - (vkw_qm/12)*vst_1
+generate ges_miete_post_est_2 = ges_miete_qm*(1-est) - (vkw_qm/12)*vst_2
+generate ges_miete_post_est_5 = ges_miete_qm*(1-est) - (vkw_qm/12)*vst_5
+generate ges_netmiete_post_est_1 = ges_netmiete_pretax*(1-est) - (vkw_qm/12)*vst_1
+generate ges_netmiete_post_est_2 = ges_netmiete_pretax*(1-est) - (vkw_qm/12)*vst_2
+generate ges_netmiete_post_est_5 = ges_netmiete_pretax*(1-est) - (vkw_qm/12)*vst_5
+
+* Variablen für die grafische Analyse
+gen rendite_post_ctax1_per = rendite_post_ctax_1 * 100
+gen rendite_post_ctax2_per = rendite_post_ctax_2 * 100
+gen rendite_post_ctax5_per = rendite_post_ctax_5 * 100
+gen rendite_post_est1_per = rendite_post_est_1 * 100
+gen rendite_post_est2_per = rendite_post_est_2 * 100
+gen rendite_post_est5_per = rendite_post_est_5 * 100
+gen rendite_pretax_perc = rendite_pretax*100
+gen g_miete = ((ges_miete_qm / l.ges_miete_qm)-1)*100
+gen g_vkw = ((vkw_qm / l.vkw_qm)-1)*100	
+gen jahr1 = jahr -0.2
+gen jahr2 = jahr +0.2
+gen jahr3 = jahr +0.4
+
+
+*** DESCRIPTIVES ***
+
+tabstat ges_miete_qm vkw_qm ges_multi rendite_pretax, stat(mean sd count) by(region) columns(statistics) nototal
+
+
+*** GRAFISCHE ANALYSE ***
+	
+* Entwicklung der Mietpreise und Mietrenditen für eine Region mit allen Baujahren
+graph twoway (bar ges_miete_qm jahr1, barw(0.35) color("110 202 226") yaxis(1) ytitle("€/qm", size(small) axis(1)))	///
+	(bar wn_miete_qm jahr2, barw(0.35) color("255 180 59"))							///
+	(scatter rendite_pretax_perc jahr, connect(direct) color("148 70 100") yaxis(2) ytitle("%", size(small) axis(2))) if region=="Gesamt",	/// 
+	by(jahr, title("Entwicklung der Mieten und Renditen v.St. in Gesamtdeutschland", size(medium) color(black)) note("") r2title("%")) by(baujahr) ///
+	xlabel(2013(1)2020, angle(45) labsize(small)) ylabel(4(1)9, axis(1)) ylabel(0(4)8, axis(2))					///
+	legend(label(1 "Miete-Gesamt") label(2 "Miete-Wohnen") label(3 "Rendite v.St.") cols(3) size(small))
+	
+	
+* Entwicklung der Mietpreise und Mietrenditen für alle Regionen und Baujahre
+graph twoway (bar ges_miete_qm jahr, barw(0.5) color("110 202 226") yaxis(1) ytitle("€/qm", size(small) axis(1)))	///
+	(scatter rendite_pretax_perc jahr, connect(direct) color("148 70 100") yaxis(2) ytitle("%", size(small) axis(2))),	///
+	by(region_num_bj, 	title("Entwicklung der Mieten und Renditen v.St.", color(black)) r2title("%") note("")) ///
+	xlabel(2013(2)2020) ylabel(0(5)10, axis(2))					///
+	legend(label(1 "Miete") label(2 "Rendite v.St."))
+	
+
+* Wachstumsraten der Mietpreise und Verkehrswerte für eine Region mit allen Baujahren
+preserve
+drop if jahr == 2013
+graph bar g_miete g_vkw if region=="Gesamt",							///
+	over(jahr, label(angle(45) ticks labsize(small)))	///
+	by(baujahr, title("Wachstumsraten der Mieten und Verkehrswerte in Gesamtdeutschland", size(medium) color(black)) note(""))	///
+	ylabel(-10(10)20)	///
+	bargap(10) bar(1,color("110 202 226")) bar(2,color("148 70 100")) ytitle("Änderung zum Vorjahreswert in %", size(small) axis(1))		///
+	legend(label(1 "Miete €/qm") label(2 "Verkehrswert  €/qm") size(small))
+restore
+
+* Wachstumsraten der Mietpreise und Verkehrswerte für alle Regionen und Baujahre
+preserve
+drop if jahr == 2013
+graph twoway (bar g_miete jahr1, barw(0.4) color("110 202 226") yaxis(1) ytitle("Änderung zum Vorjahreswert in %", size(small) axis(1)))	///
+	(bar g_vkw jahr2, barw(0.4) color("148 70 100")),																					///
+	by(region_num_bj, 	title("Entwicklung der Wachstumsraten der Mieten und der Verkehrswerte", size(small) color(black)) note(""))				///
+	xlabel(2014(2)2020) 																						///
+	legend(label(1 "Miete €/qm") label(2 "Verkehrswert  €/qm") size(small))		
+restore
+
+
+* Wachstumsraten der Verkehrswerte im Vergleich von zwei Regionen mit allen Baujahren (außer Gesamt)
+preserve
+drop if jahr == 2013
+graph bar g_vkw if baujahr != 5 & (region=="Berlin" | region =="Gesamt"), over(region) over(jahr, label(angle(45) ticks labsize(small))) over(baujahr, nolabel)	///
+	bar(1, color("110 202 226")) bar(2,color("148 70 100"))		///
+	legend(size(small)) ytitle("Änderung zum Vorjahreswert in %", size(small)) ysc(titlegap(relativesize))	///
+	title("Wachstumsraten der Verkehrswerte in Berlin und Gesamtdeutschland", size(medium) color(black))
+restore
+	
+
+* Mietpreise vor und nach Steuern (KSt-Szenario) für eine Region mit allen Baujahren
+graph bar ges_miete_qm ges_miete_post_ctax_1 if region=="Gesamt",												///
+	over(jahr, label(angle(45) ticks labsize(small))) by(baujahr, title("Mietpreise vor und nach Steuern für Gesamtdeutschland", size(medium) color(black)) note("")) ///
+	exclude0 ylabel(2(2)8)	///
+	bargap(10) bar(1,color("110 202 226")) bar(2,color("148 70 100"))				///
+	legend(label(1 "Miete v.St.") label(2 "Miete n.St.") size(small))
+	
+
+* Mietrenditen nach Steuern für die VSt-Szenarien (1-, 2-, 5-%) inkl. KSt und GewSt für eine Region mit allen Baujahren
+graph twoway (bar rendite_post_ctax1_per jahr, barw(0.2) color("110 202 226"))		///
+	(bar rendite_post_ctax2_per jahr2, barw(0.2)	color("148 70 100"))			///
+	(bar rendite_post_ctax5_per jahr3, barw(0.2) color("255 180 59")) if region =="Gesamt",				///
+	by(region, title("Mietrenditen nach Steuern (KSt + GewSt + VSt) für Gesamtdeutschland", size(medium) color(black)) note("")) by(jahr) by(baujahr)	///
+	xlabel(2013(1)2020, angle(45)) ylabel(-4(2)4)													///
+	ytitle("%") ysc(titlegap(relativesize))															///
+	legend(label(1 "1%-VSt") label(2 "2%-VSt") label(3 "5%-VSt") cols(3) size(small))
+	
+
+* Mietrenditen nach Steuern für die VSt-Szenarien (1-, 2-, 5-%) inkl. ESt für eine Region mit allen Baujahren
+graph twoway (bar rendite_post_est1_per jahr, barw(0.2) color("110 202 226"))	///
+	(bar rendite_post_est2_per jahr2, barw(0.2)	color("148 70 100"))			///
+	(bar rendite_post_est5_per jahr3, barw(0.2) color("255 180 59")) if region=="Gesamt",			///
+	by(region, title("Mietrenditen nach Steuern (ESt + VSt) für Gesamtdeutschland", size(medium) color(black)) note("")) by(jahr) by(baujahr)	///
+	xlabel(2013(1)2020, angle(45)) ylabel(-4(2)4)													///
+	ytitle("%") ysc(titlegap(relativesize))															///
+	legend(label(1 "1%-VSt") label(2 "2%-VSt") label(3 "5%-VSt") cols(3) size(small))
+
+log close
+exit
