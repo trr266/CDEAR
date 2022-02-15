@@ -343,6 +343,7 @@ data_F_analysis_2.xlsx\
 - The Python File Structure Tree was taken from @sdtemp.
 - The TRR 266 Template for Reproducible Empirical Accounting Research is available from @trrtreat.
 - Free data science resources: https://github.com/alastairrushworth/free-data-science
+- Great book on data science using Python: @p4ds
 - Read about tidy data here: @wickham2014
 - Licensing of code and data: C02 Open Science office hours, @crlic
 - Do's and don'ts from a survey of software developers [@datreebest]
